@@ -30,7 +30,7 @@ app.post('/SET', (req, res) => {
     res.send('Set value successfully');
   } else {
     // 返回错误信息
-    res.status(400).send('No set-Values in header');
+    res.status(400).send('No Cookie-Values in header');
   }
 });
 
