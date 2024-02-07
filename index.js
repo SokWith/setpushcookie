@@ -8,7 +8,7 @@ let strValues = '';
 // 设置端口号
 const port = 7860;
 // 从环境变量中获取密码
-const password = process.env.PWD || '123456' ;
+const password = process.env.PASSWORD || '123456' ;
 
 // 处理 POST 请求
 app.post('/SET', (req, res) => {
