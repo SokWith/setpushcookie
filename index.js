@@ -68,6 +68,13 @@ app.all('/CLS', (req, res) => {
   res.send('Clear value successfully');
 });
 
+// 处理 / 请求
+app.all('/', (req, res) => {
+  // 返回提示信息
+  res.send('Please visit /SET /GET or /CLS with ?pwd=xxxxxx');
+});
+
+
 // 监听端口
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
