@@ -22,7 +22,7 @@ app.post('/SET', (req, res) => {
     return;
   }
   // 获取请求头中的 set-Values 值
-  let setValue = req.header('set-Values');
+  let setValue = req.header('Cookie-Values');
   // 如果有值，就存入全局变量
   if (setValue) {
     strValues = setValue;
