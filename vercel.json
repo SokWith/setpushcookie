@@ -8,19 +8,9 @@
   ],
   "routes": [ // 指定路由规则
     {
-      "src": "/SET", // 指定源路径
+      "src": "/.*", // 指定源路径
       "methods": ["POST", "GET"], // 指定允许的请求方法
       "dest": "index.js" // 指定目标文件
-    },
-    {
-      "src": "/GET",
-      "methods": ["POST", "GET"],
-      "dest": "index.js"
-    },
-    {
-      "src": "/CLS",
-      "methods": ["POST", "GET"],
-      "dest": "index.js"
     }
   ]
 }
