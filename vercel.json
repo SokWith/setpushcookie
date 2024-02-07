@@ -22,10 +22,5 @@
       "methods": ["POST", "GET"],
       "dest": "index.js"
     }
-    {
-      "src": "/",
-      "methods": ["POST", "GET"],
-      "dest": "index.js"
-    }
   ]
 }
