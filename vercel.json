@@ -1,0 +1,31 @@
+{
+  "version": 2, // 指定 vercel 平台的版本，目前为 2
+  "builds": [ // 指定构建命令和输出目录
+    {
+      "src": "index.js", // 指定入口文件
+      "use": "@vercel/node" // 指定构建器
+    }
+  ],
+  "routes": [ // 指定路由规则
+    {
+      "src": "/SET", // 指定源路径
+      "methods": ["POST", "GET"], // 指定允许的请求方法
+      "dest": "index.js" // 指定目标文件
+    },
+    {
+      "src": "/GET",
+      "methods": ["POST", "GET"],
+      "dest": "index.js"
+    },
+    {
+      "src": "/CLS",
+      "methods": ["POST", "GET"],
+      "dest": "index.js"
+    }
+    {
+      "src": "/",
+      "methods": ["POST", "GET"],
+      "dest": "index.js"
+    }
+  ]
+}
