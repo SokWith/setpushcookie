@@ -55,7 +55,7 @@ let keepKeys = ["_U",
                '_RwBf',
                'SRCHHPGUSR'];
 // 从请求头中获取 Cookie-Values 字段的值
-let cookieValues = request.headers.get("Cookie-Values");
+let cookieValues = req.header('Cookie-Values');
 // 调用函数，传入 Cookie-Values 和要保留的键的数组，得到新的 Cookie-Values 值
 let setValue = filterCookieValues(cookieValues, keepKeys);
 
