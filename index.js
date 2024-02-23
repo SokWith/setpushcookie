@@ -18,10 +18,12 @@ function filterCookieValues(cookieValues, keepKeys) {
   let pairs = cookieValues.split(";");
   // 遍历每个键值对
   for (let pair of pairs) {
-    // 用等号分割键和值，得到一个长度为 2 的数组
-    let [key, value] = pair.split("=", 2);
-    // 去除键的前后空格
-    key = key.trim();
+    // 用第一个等号分割键和值，得到一个数组
+    let parts = pair.split("=");
+    // 取出数组的第一个元素作为键，去除前后空格
+    let key = parts[0].trim();
+    // 把数组的剩余元素用等号连接起来，得到完整的值
+    let value = parts.slice(1).join("=");
     // 如果键在要保留的键的数组中，就把键值对添加到新的 Cookie-Values 值中，用分号和空格分隔
     if (keepKeys.includes(key)) {
       newCookieValues += key + "=" + value + "; ";
@@ -32,6 +34,7 @@ function filterCookieValues(cookieValues, keepKeys) {
   // 返回新的 Cookie-Values 值
   return newCookieValues;
 }
+
 
 // 处理 POST 请求
 app.post('/SET', (req, res) => {
