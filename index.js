@@ -10,6 +10,29 @@ const port = 7860;
 // 从环境变量中获取密码
 const password = process.env.PASSWORD || '123456' ;
 
+// 定义一个函数，接受 Cookie-Values 和要保留的键的数组作为参数
+function filterCookieValues(cookieValues, keepKeys) {
+  // 定义一个空字符串，用于存储新的 Cookie-Values 值
+  let newCookieValues = "";
+  // 用分号分割 Cookie-Values，得到一个键值对的数组
+  let pairs = cookieValues.split(";");
+  // 遍历每个键值对
+  for (let pair of pairs) {
+    // 用等号分割键和值，得到一个长度为 2 的数组
+    let [key, value] = pair.split("=");
+    // 去除键的前后空格
+    key = key.trim();
+    // 如果键在要保留的键的数组中，就把键值对添加到新的 Cookie-Values 值中，用分号和空格分隔
+    if (keepKeys.includes(key)) {
+      newCookieValues += key + "=" + value + "; ";
+    }
+  }
+  // 去除新的 Cookie-Values 值的最后一个分号和空格
+  newCookieValues = newCookieValues.slice(0, -2);
+  // 返回新的 Cookie-Values 值
+  return newCookieValues;
+}
+
 // 处理 POST 请求
 app.post('/SET', (req, res) => {
   // 获取请求的方法
@@ -22,7 +45,20 @@ app.post('/SET', (req, res) => {
     return;
   }
   // 获取请求头中的 set-Values 值
-  let setValue = req.header('Cookie-Values');
+  //let setValue = req.header('Cookie-Values');
+
+  // 定义一个数组，包含要保留的键
+let keepKeys = ["_U", 
+                "MUID",
+                'KievRPSSecAuth',
+                'cct',
+               '_RwBf',
+               'SRCHHPGUSR'];
+// 从请求头中获取 Cookie-Values 字段的值
+let cookieValues = request.headers.get("Cookie-Values");
+// 调用函数，传入 Cookie-Values 和要保留的键的数组，得到新的 Cookie-Values 值
+let setValue = filterCookieValues(cookieValues, keepKeys);
+
   // 如果有值，就存入全局变量
   if (setValue) {
     strValues = setValue;
