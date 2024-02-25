@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 // 定义全局字符串变量
 let strValues = '';
+let strUvalues = '';
 // 设置端口号
 const port = 7860;
 // 从环境变量中获取密码
@@ -57,14 +58,23 @@ let keepKeys = ["_U",
                 'cct',
                '_RwBf',
                'SRCHHPGUSR'];
+    // 定义一个数组，包含要保留的键
+let keepKeysU = ["_U"];
 // 从请求头中获取 Cookie-Values 字段的值
 let cookieValues = req.header('Cookie-Values');
 // 调用函数，传入 Cookie-Values 和要保留的键的数组，得到新的 Cookie-Values 值
 let setValue = filterCookieValues(cookieValues, keepKeys);
+  let getUValue = filterCookieValues(cookieValues, keepKeysU);
 
   // 如果有值，就存入全局变量
   if (setValue) {
     strValues = setValue;
+    if (getUValue){
+  // 如果 getUValue 不在 strUvalues 中，将其添加到 strUvalues 中
+     if (!strUvalues.includes(getUValue)) {
+        strUvalues += ';' + getUValue;
+      }
+    }
     // 返回成功信息
     res.send('Set value successfully');
   } else {
@@ -101,11 +111,50 @@ app.all('/CLS', (req, res) => {
     res.status(401).send('Invalid password');
     return;
   }
+  //显示历史值
+  const replacedStr = strUvalues.replace(/;/g, "<br>");
+  // 分割字符串并构建 JSON 对象
+const valuesArray = strUvalues.split(";");
+const jsonObject = {};
+valuesArray.forEach((value, index) => {
+  jsonObject[`No${index + 1}`] = value; // 使用数字作为键，加上前缀 "No"
+});
+
+// 将 JSON 对象转换为字符串，并指定缩进格式
+const jsonString = JSON.stringify(jsonObject, null, 2); // 使用 null 和 2 来指定缩进格式
+  
   // 清除全局变量的值
   strValues = '';
+  strUvalues = '';
+
   // 返回成功信息
-  res.send('Clear value successfully');
+  res.send('Clear value successfully'+ "\n" + replacedStr);
+  // 返回 JSON 数据
+  //res.json(jsonString);
+  
 });
+
+
+// 处理 HisU 请求
+app.all('/HisU', (req, res) => {
+  // 获取请求的方法
+  let method = req.method;
+  // 获取 pwd 参数的值
+  let pwd = req.query.pwd;
+  // 如果没有 pwd 参数，或者 pwd 参数的值不等于密码变量的值，返回错误信息
+  if (!pwd || pwd !== password) {
+    res.status(401).send('Invalid password');
+    return;
+  }
+  
+  //显示历史值
+  const replacedStr = strUvalues.replace(/;/g, "<br>");
+
+  // 返回成功信息
+  res.send('Ukey History:'+ "\n" + replacedStr);
+  
+});
+
 
 // 处理 / 请求
 app.all('/', (req, res) => {
@@ -118,4 +167,3 @@ app.all('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
