@@ -57,9 +57,11 @@ let keepKeys = ["_U",
                 'KievRPSSecAuth',
                 'cct',
                '_RwBf',
-               'SRCHHPGUSR'];
+               'SRCHHPGUSR',
+               'WLS'];
     // 定义一个数组，包含要保留的键
-let keepKeysU = ["_U"];
+let keepKeysU = ["_U",
+                "WLS"];
 // 从请求头中获取 Cookie-Values 字段的值
 let cookieValues = req.header('Cookie-Values');
 // 调用函数，传入 Cookie-Values 和要保留的键的数组，得到新的 Cookie-Values 值
