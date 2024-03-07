@@ -4,11 +4,18 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+    "os"
 )
 
 var strValues string
 var strUvalues string
-var password = "123456"
+var password = os.Getenv("PASSWORD")
+
+func init(){
+    if password == "" {
+      password = "123456"
+    }
+  }
 
 func filterCookieValues(cookieValues string, keepKeys []string) string {
 	newCookieValues := ""
@@ -35,7 +42,6 @@ func contains(keys []string, key string) bool {
 }
 
 func handleSET(w http.ResponseWriter, req *http.Request) {
-	method := req.Method
 	pwd := req.URL.Query().Get("pwd")
 	if pwd == "" || pwd != password {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -61,20 +67,18 @@ func handleSET(w http.ResponseWriter, req *http.Request) {
 }
 
 func handleGET(w http.ResponseWriter, req *http.Request) {
-	method := req.Method
 	pwd := req.URL.Query().Get("pwd")
 	if pwd == "" || pwd != password {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("Invalid password"))
 		return
 	}
-	result := map[string]interface{}{"result": map[string]string{"cookies": strValues}}
+    result := `{"result": {"cookies": "` + strValues + `"}}`
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(fmt.Sprintf("%v", result)))
 }
 
 func handleCLS(w http.ResponseWriter, req *http.Request) {
-	method := req.Method
 	pwd := req.URL.Query().Get("pwd")
 	if pwd == "" || pwd != password {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -82,12 +86,6 @@ func handleCLS(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	replacedStr := strings.ReplaceAll(strUvalues, ";", "<br>")
-	valuesArray := strings.Split(strUvalues, ";")
-	jsonObject := make(map[string]string)
-	for index, value := range valuesArray {
-		jsonObject[fmt.Sprintf("No%d", index+1)] = value
-	}
-	jsonString := fmt.Sprintf("%v", jsonObject)
 
 	strValues = ""
 	strUvalues = ""
@@ -96,7 +94,6 @@ func handleCLS(w http.ResponseWriter, req *http.Request) {
 }
 
 func handleHisU(w http.ResponseWriter, req *http.Request) {
-	method := req.Method
 	pwd := req.URL.Query().Get("pwd")
 	if pwd == "" || pwd != password {
 		w.WriteHeader(http.StatusUnauthorized)
