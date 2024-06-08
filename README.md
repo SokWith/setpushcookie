@@ -10,5 +10,6 @@
 2. workers的部署还有一种直接set-cookie返回，按上面第3项；
 3. 如果有隐私顾虑（建议用小号处理这些AI应用），不要设置自动推送cookie，并在拉取cookie后 /CLS 清除服务器上保存的cookie；
 4. 一般使用最新的cn.bing.com的cookie（即注销后重新登录获取的），大都不再需要人机验证；若需要人机验证，则需要更新填写人机验证服务器，比如 https://cct.nbing.eu.org 来认证cookie；
+5. 体验地址：https://mycfoo-bingai.hf.space/ 在设置里面选择 【拉取推送cookie】；
 ### 优点
  1次推送，处处拉取，方便移动终端登录；
